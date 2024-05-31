@@ -1,0 +1,34 @@
+#:kivy 3.0.0
+#:include results_screen.kv
+#:include choosing_dialog.kv
+#:include files_screen.kv
+#:include messages.kv
+
+<CommonNavigationRailItem>
+
+    MDNavigationRailItemIcon:
+        icon: root.icon
+
+    MDNavigationRailItemLabel:
+        text: root.text
+
+MDBoxLayout:
+    md_bg_color: self.theme_cls.secondaryContainerColor
+    MDNavigationRail:
+
+        CommonNavigationRailItem:
+            icon: "clipboard-list-outline"
+            text: "Результаты"  
+
+        CommonNavigationRailItem:
+            icon: "folder-outline"
+            text: "Датасеты"            
+
+        CommonNavigationRailItem:
+            icon: "library-outline"
+            text: "Модели"
+
+    
+    MDScreen:
+        id: workspace
+        md_bg_color: self.theme_cls.secondaryContainerColor

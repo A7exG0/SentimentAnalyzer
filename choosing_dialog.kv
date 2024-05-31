@@ -1,0 +1,36 @@
+<Check@MDListItemTrailingCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+<DialogListItem>
+    state_hover: 0
+    ripple_effect: False
+    MDListItemHeadlineText:
+        text: root.name
+    Check:
+        on_release: root.is_choosed = self.active
+
+<ChoosingDialog>
+    MDDialogContentContainer:
+        orientation: "vertical"
+        ScrollView:
+            size_hint_y:None
+            height:200
+            MDList:
+                id: container
+                adaptive_height: True
+            
+    MDDialogButtonContainer:
+        MDButton:
+            on_release: root.dismiss()
+            MDButtonText:
+                text:"Cancel"
+                style:"text"
+
+        Widget:
+        MDButton:
+            on_release: root._save_file_name()
+            MDButtonText:
+                text: "Accept"
+                style:"text"

@@ -1,0 +1,148 @@
+
+<CheckItem>
+    adaptive_height: True
+
+    MDCheckbox:
+        on_active: root._on_active(*args)
+    MDLabel:
+        text: root.text
+        adaptive_height: True
+        padding_x: "12dp"
+        pos_hint: {"center_y": .5}
+
+<PreprocessDialog>
+    MDDialogHeadlineText:
+        text: "Параметры предобработки" 
+    MDDialogContentContainer:
+        orientation: "vertical"
+        MDTextField:
+            id: new_name
+            mode: "outlined"
+            size_hint_x: None
+            width: "320dp"
+            text: root.new_name
+            MDTextFieldHintText:
+                text:"Введите название для нового датасета"
+            MDTextFieldTrailingIcon:
+                icon: "information"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            padding: "12dp"
+            spacing: "12dp"
+            CheckItem:
+                id: low_check
+                text: "Привести все к нижнему регистру"
+            CheckItem:
+                id: del_symb_check
+                text: "Удалить лишние символы (*,./! и т.д.)"
+            CheckItem:
+                id: del_words_check
+                text: "Удалить стоп-слова"
+            CheckItem:
+                id: vect_check
+                text: "Векторизировать тексты с помощью FastText"
+            
+
+    MDDialogButtonContainer:
+        MDButton:
+            on_release: root.dismiss()
+            MDButtonText:
+                text:"Cancel"
+                style:"text"
+        Widget:
+        MDButton:
+            on_release: root.close_dialog()
+            MDButtonText:
+                text:"Accept"
+                style:"text"
+
+<ModelItem>
+    type: "small"
+    size_hint_x: .95
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+    MDTopAppBarLeadingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "file"
+
+    MDTopAppBarTitle:
+        font_size: "14sp"
+        text: root.name
+        pos_hint: {"center_x": .5}
+
+    MDTopAppBarTrailingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "trash-can-outline"
+            on_release: root._remove_file() if not root.disabled else None
+
+<DatasetItem>
+    type: "small"
+    size_hint_x: .95
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+    MDTopAppBarLeadingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "menu"
+            on_release: root._open_menu(self)
+
+    MDTopAppBarTitle:
+        font_size: "14sp"
+        text: root.name
+        pos_hint: {"center_x": .5}
+
+    MDTopAppBarTrailingButtonContainer:
+        MDActionTopAppBarButton:
+            icon: "trash-can-outline"
+            on_release: root._remove_file()
+
+<FileDialog>
+    MDDialogHeadlineText:
+        text: "Добавьте необходимые файлы"
+    MDDialogContentContainer:
+        Widget:
+        MDButton:
+            on_release: root._file_manager.open()
+            MDButtonText:
+                text: "Выбрать файлы"
+                style: "elevated"
+        Widget:
+    MDDialogButtonContainer:
+        MDButton:
+            style: "text"
+            on_release: root.dismiss()
+            MDButtonText:
+                text: "Отмена"
+        Widget:
+        MDButton:
+            style:"text" 
+            on_release: root.accept_close()
+            MDButtonText:
+                text: "Далее"
+
+<Files>
+    md_bg_color: self.theme_cls.secondaryContainerColor
+    orientation: "vertical"
+    MDBoxLayout: 
+        size_hint_x: 1
+        size_hint_y: .2
+        pos_hint: {"center_x": .5, "center_y": .9}
+        Widget:
+        MDButton:
+            style: "elevated"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: root._open_choosing_dialog() 
+            MDButtonIcon:
+                icon: "file-plus"
+            MDButtonText:
+                text: "Добавить"
+        Widget:
+
+    ScrollView:
+        size_hint_y: None
+        height: root.height - dp(120)
+        MDBoxLayout:
+            id: appbar
+            orientation: "vertical"
+            adaptive_height: True

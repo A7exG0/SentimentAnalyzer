@@ -1,0 +1,86 @@
+<ExpansionPanelItem>
+
+    MDExpansionPanelHeader:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            ripple_effect: False
+
+            MDListItemSupportingText:
+                id: date_text
+                text: root.text
+
+            TrailingPressedIconButton:
+                id: chevron
+                icon: "chevron-right"
+                on_release: self.open_chevron(root)
+
+    MDExpansionPanelContent:
+        orientation: "vertical"
+        padding: 0, 0, "12dp", "12dp"
+        md_bg_color: self.theme_cls.surfaceContainerLowColor
+
+        MDLabel:
+            text: "Выбранные параметры:"
+            adaptive_height: True
+            padding_x: "16dp"
+            padding_y: "12dp"
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Выбранный датасет"
+
+            MDListItemTrailingSupportingText:
+                text: root.dataset_path
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Выбранная модель"
+
+            MDListItemTrailingSupportingText:
+                text: root.model_path
+        MDDivider:
+        MDListItem:
+            state_hover: 0
+            ripple_effect:False
+
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            MDListItemHeadlineText:
+                text: "Полученные сентименты:"
+
+            #TODO Заменить на норм кнопку
+            MDListItemTrailingSupportingText:
+                text: "file"  
+
+        MDDivider:      
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Точность модели"
+
+            MDListItemTrailingSupportingText:
+                text: root.accuracy  
+        MDDivider:
+        MDListItem:
+            state_hover: 0
+            ripple_effect:False
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            MDListItemHeadlineText:
+                text: "Ошибки модели при тестировании:"
+            MDListItemTrailingSupportingText:
+                text: "file"  
+        MDDivider:

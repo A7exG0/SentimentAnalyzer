@@ -1,0 +1,305 @@
+<ProgressLine>
+    spacing:"8dp"
+    auto_dismiss: False
+    MDDialogHeadlineText:
+        text: root.text 
+    MDDialogContentContainer:
+        MDBoxLayout:
+            md_bg_color: "gray"
+            size_hint_y: None 
+            height: "30dp" 
+            MDLinearProgressIndicator:
+                value: root.progress
+                type: "determinate"
+                size_hint_y: None
+                height: "30dp"
+    MDDialogButtonContainer:
+        Widget:
+        Widget:
+        MDButton:
+            style: "text"
+            on_release: root.stop()
+            MDButtonText:
+                text:"Прервать"
+
+
+<Results>
+    ScrollView:
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 1
+            adaptive_height: True
+            
+            MDList:
+                MDListItem: #TODO сделать отдельный класс
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                    state_hover: 0 
+                    adaptive_height:True
+                    MDCard:
+                        id: model
+                        style: "elevated"
+                        # pos_hint: {"center_x": 0, "center_y": .5}
+                        padding: "10dp"
+                        size_hint: None, None
+                        size: "300dp", "80dp"
+                        # Sets custom properties.
+                        theme_shadow_color: "Custom"
+                        shadow_color: "blue"
+                        theme_bg_color: "Custom"
+                        md_bg_color: "white"
+                        md_bg_color_disabled: "grey"
+                        theme_shadow_offset: "Custom"
+                        shadow_offset: (1, -2)              
+                        theme_shadow_softness: "Custom"
+                        shadow_softness: 1
+                        theme_elevation_level: "Custom"
+                        elevation_level: 2
+                        on_release: root.show_model_dialog()
+                        MDRelativeLayout:
+                            MDLabel:
+                                id: model_text
+                                text: "Добавить модель"
+                                color: "grey"
+                                adaptive_size:True
+                                # bold: True
+                    MDCard:
+                        id: dataset
+                        style: "elevated"
+                        padding: "10dp"
+                        size_hint: None, None
+                        size: "300dp", "80dp"
+                        # Sets custom properties.
+                        theme_shadow_color: "Custom"
+                        shadow_color: "blue"
+                        theme_bg_color: "Custom"
+                        md_bg_color: "white"
+                        md_bg_color_disabled: "grey"
+                        theme_shadow_offset: "Custom"
+                        shadow_offset: (1, -2)              
+                        theme_shadow_softness: "Custom"
+                        shadow_softness: 1
+                        theme_elevation_level: "Custom"
+                        elevation_level: 2
+                        on_release: root.show_dataset_dialog()
+                        MDRelativeLayout:
+
+                            MDLabel:
+                                id: dataset_text
+                                text: "Добавить датасет" 
+                                color: "grey"
+                                adaptive_size:True
+                MDListItem:
+                    id: classification
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                    detect_visible: False
+                    state_hover: 0 
+                    disabled: True
+
+                    MDListItemHeadlineText:
+                        text: "Классифицировать данные датасета:"
+
+                    MDListItemTrailingCheckbox:
+                        id: classification_checkbox
+                        state_hover: 0 
+                        on_release: root._active_checbox(self)
+
+                MDListItem:
+                    id: diagram
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                    state_hover: 0 
+                    disabled: True
+                    # disabled: True
+
+                    MDListItemHeadlineText:
+                        text: "Вывести диаграмму сентиментов"
+
+                    MDListItemTrailingCheckbox:
+                        id: diagram_checkbox
+                        state_hover: 0 
+
+
+                MDListItem:
+                    id: accuracy
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                    state_hover: 0 
+                    disabled: True
+
+                    MDListItemHeadlineText:
+                        text: "Вывести точность модели"
+
+                    MDListItemTrailingCheckbox:
+                        id: accuracy_checkbox
+                        state_hover: 0 
+                        on_release: root._active_checbox(self)
+
+                MDListItem:
+                    id: saving_mistakes
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.surfaceContainerLowColor
+                    detect_visible: False
+                    state_hover: 0 
+                    disabled: True
+
+                    MDListItemHeadlineText:
+                        text: "Получить ошибки модели тестового датасета"
+
+                    MDListItemTrailingCheckbox:
+                        id: saving_mistakes_checkbox
+                        state_hover: 0 
+                        on_release: root._active_checbox(self)
+            
+            MDBoxLayout:
+                size_hint: None, None 
+                size_hint_x: 1 
+                height: 60
+                Widget:
+                MDButton:
+                    id: result_button
+                    style: "filled"
+                    pos_hint: {"center_x": 1, "center_y": 0.5}
+                    on_release: root.get_result()  if not self.disabled else None
+                    disabled: True
+                    MDButtonText:
+                        text: "Получить результаты"
+                Widget:
+                
+            MDList:
+                id: container
+
+<ExpansionPanelItem>
+    MDExpansionPanelHeader:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            ripple_effect: False
+
+            MDIconButton:
+                icon: "trash-can-outline"
+                style: "standard"
+                on_release: root.remove_expansion_panel()
+
+            MDListItemSupportingText:
+                text: root.name
+                #TODO добавить метку или название
+
+            TrailingPressedIconButton:
+                id: chevron
+                icon: "chevron-right"
+                on_release: self.open_chevron(root)
+
+    MDExpansionPanelContent:
+        orientation: "vertical"
+        padding: 0, 0, "12dp", "12dp"
+        md_bg_color: self.theme_cls.surfaceContainerLowColor
+        id: main_list
+        MDLabel:
+            text: "Выбранные параметры:"
+            adaptive_height: True
+            padding_x: "16dp"
+            padding_y: "12dp"
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Выбранный датасет"
+
+            MDListItemTrailingSupportingText:
+                text: root.dataset_name
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Выбранная модель"
+
+            MDListItemTrailingSupportingText:
+                text: root.model_name
+
+
+        MDDivider:      
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Точность модели"
+
+            MDListItemTrailingSupportingText:
+                id: accuracy_text
+                text: root.accuracy
+            # Widget:
+                # size_hint_x: 0.01
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Полученные сентименты:"
+
+            MDButton:
+                id: sentiment_button
+                style: 'text'
+                on_release: root.copy_path(root.sentiment_path)  if not self.disabled else None
+                disabled:  root.sentiment_path_disabled
+                MDButtonText:
+                    text: "Путь к файлу"
+
+        MDDivider:
+        MDListItem:
+            state_hover: 0
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            ripple_effect:False
+
+            MDListItemHeadlineText:
+                text: "Ошибки модели при тестировании:"
+
+            MDButton:
+                id: mistakes_button 
+                style: 'text'
+                on_release: root.copy_path(root.mistakes_path) if not self.disabled else None
+                disabled: root.mistakes_path_disabled
+                MDButtonText:
+                    text: "Путь к файлу"
+
+        MDDivider:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+            MDListItemHeadlineText:
+                text: "Диаграмма сентиментов"
+
+            MDListItemTrailingCheckbox:
+                active: root.is_diagram
+                disabled: True
+                
+        MDDivider:
+        MDListItem:
+            id: diagram
+            theme_bg_color: "Custom"
+            adaptive_height: True
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            state_hover: 0
+            ripple_effect:False
+            Image: 
+                source: root.fig_path
+                size_hint: 1, 1 
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
