@@ -2,7 +2,7 @@ from kivy.properties import StringProperty, BooleanProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import MDListItem, MDListItemHeadlineText, MDListItemTrailingCheckbox
 import os
-from messages import Message
+from messages import Message, Error
 
 class DialogListItem(MDListItem):
     name = StringProperty()

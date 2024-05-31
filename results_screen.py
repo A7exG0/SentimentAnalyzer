@@ -90,7 +90,10 @@ class ExpansionPanelItem(MDExpansionPanel, DatasetHandler):
 
     def remove_expansion_panel(self):
         self.parent.remove_widget(self)
-        shutil.rmtree("./results/"+self.name)
+        if os.path.exists("./results/"+self.name):
+            shutil.rmtree("./results/"+self.name)
+        else: 
+            Error(text="Проблема с файловой системой. Перезапустите приложение.").open()
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
@@ -218,6 +221,8 @@ class Results(MDScreen, DatasetHandler):
             if attribute_name == "model_name":
                 self.model_path = "./models/" + dialog.file_name
                 self.model = Model(self.model_path)
+                if self.model is None:
+                    Error(text="Необходимой модели не сущетсвует").open()
                 self.ids.accuracy.disabled = False
                 self.ids.saving_mistakes.disabled = False
             else:
@@ -325,7 +330,7 @@ class Results(MDScreen, DatasetHandler):
         сохраняет ошибки модели в тестах.
         '''
         mistakes_dataset = pd.DataFrame(columns=['text', 'value', 'predicted'])
-        dataset = self.read_file(TEST_DATASET_PATH) 
+        dataset = self.read_file(TEST_DATASET_PATH, sep=',') 
         total = len(dataset)
         correct_predictions = 0
 
@@ -376,6 +381,7 @@ class Results(MDScreen, DatasetHandler):
                 self.adding_panel.model_name = os.path.basename(self.model_path)
             else:
                 Error(text="Выбранной модели не существует").open()
+                return
 
         if self.ids.diagram_checkbox.active == True:
             self.adding_panel.ids.diagram.height = dp(500)

@@ -1,5 +1,5 @@
 import fasttext
-from kivy.properties import StringProperty, ObjectProperty
+import os 
 
 class Model:
     
@@ -7,7 +7,9 @@ class Model:
         self.model = self.upload_model(model_path)
 
     def upload_model(self, path):
-        return fasttext.load_model(path)
-
+        if os.path.exists(path):
+            return fasttext.load_model(path)
+        else:
+            return None
     def get_prediction(self, text):
         return self.model.predict(text)

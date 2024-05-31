@@ -1,9 +1,7 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.scrollview import *
 import os
-import platform
 from kivymd.uix.list import *
 from kivy.core.window import Window
 from kivy.properties import StringProperty
@@ -49,15 +47,15 @@ class SentimentAnalyzer(MDApp):
         self.change_workspace(results)
 
     def build(self):
-        if self.is_windows(): 
-            from kivy.config import Config 
-            Config.set('input', 'mouse', 'mouse,disable_multitouch')
+        # if self.is_windows(): 
+        from kivy.config import Config 
+        Config.set('input', 'mouse', 'mouse,disable_multitouch')
         Window.minimum_width = 800
         Window.minimum_height = 600
-        self.root = Builder.load_file("main.kv")
-        return self.root
+        screen = Builder.load_file('main.kv')
+        return screen 
 
-    def is_windows(self):
-        return platform.system() == 'Windows'
+    # def is_windows(self):
+    #     return platform.system() == 'Windows'
 
 SentimentAnalyzer().run()

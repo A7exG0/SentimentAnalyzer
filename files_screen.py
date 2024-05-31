@@ -10,7 +10,8 @@ from kivymd.uix.menu import MDDropdownMenu
 import sys
 from dataset_handler import DatasetHandler
 from messages import Message, Error
-    
+from kivy.clock import Clock
+
 def get_os():
     if sys.platform.startswith('win'):
         return 'Windows'
@@ -25,7 +26,7 @@ class CheckItem(MDBoxLayout):
     text = StringProperty()
     active = BooleanProperty(False)
 
-    def on_active(self, checkbox, value):
+    def _on_active(self, checkbox, value):
         self.active = value 
 
 class PreprocessDialog(MDDialog):
@@ -75,8 +76,12 @@ class ModelItem(MDTopAppBar):
     dir_name = StringProperty()
 
     def _remove_file(self):
+        path = f"./{self.dir_name}/"+ self.name
+        lst = self.parent.parent.parent.file_pathes_list
+        while self.name in lst:
+            lst.remove(self.name)
         self.parent.remove_widget(self)
-        os.remove(f"./{self.dir_name}/"+ self.name)
+        os.remove(path)
 
 
 class DatasetItem(MDTopAppBar, DatasetHandler):
@@ -86,8 +91,12 @@ class DatasetItem(MDTopAppBar, DatasetHandler):
     _preproc_dialog: PreprocessDialog = None
 
     def _remove_file(self):
+        path = f"./{self.dir_name}/"+ self.name
+        lst = self.parent.parent.parent.file_pathes_list
+        while self.name in lst:
+            lst.remove(self.name)
         self.parent.remove_widget(self)
-        os.remove(f"./{self.dir_name}/"+ self.name)
+        os.remove(path)
 
     def _open_menu(self, menu_button):
         menu_items = []
@@ -141,15 +150,16 @@ class FileManager(MDFileManager):
     selected_pathes = ListProperty()
         
     def select_path(self, path: str, *args):
+        if os.path.isdir(path):
+            Message(text="Вы не выбрали ни одного файла").open()
+            return 
         if os.path.basename(path) in self.file_pathes_list:
             Message(text="Файл с таким именем уже существует").open()
             return
-        if path in self.selected_pathes:
-            self.selected_pathes.remove(path)
-            Message(text="Файл убран:" + path).open()
-        else:
+        else: 
             self.selected_pathes.append(path)
             Message(text="Выбран файл:" + path).open()
+            self.close()
         
     def exit_manager(self, *args):
         self.close()
